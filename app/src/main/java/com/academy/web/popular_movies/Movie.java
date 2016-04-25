@@ -12,11 +12,13 @@ public class Movie implements Parcelable{
     public String plotSynopsis;
     public double userRating;
     public String releaseDate;
+    public long movieID;
 
     public Movie() {
     }
 
-    public Movie(String movieTitle, String posterImageLink, String plotSynopsis, double userRating, String releaseDate) {
+    public Movie(long movieID, String movieTitle, String posterImageLink, String plotSynopsis, double userRating, String releaseDate) {
+        this.movieID = movieID;
         this.movieTitle = movieTitle;
         this.posterImageLink = posterImageLink;
         this.plotSynopsis = plotSynopsis;
@@ -26,6 +28,7 @@ public class Movie implements Parcelable{
 
 
     protected Movie(Parcel in) {
+        movieID = in.readLong();
         movieTitle = in.readString();
         posterImageLink = in.readString();
         plotSynopsis = in.readString();
@@ -52,6 +55,7 @@ public class Movie implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(movieID);
         parcel.writeString(movieTitle);
         parcel.writeString(posterImageLink);
         parcel.writeString(plotSynopsis);

@@ -9,8 +9,12 @@
     <string name="pref_sort_key" translatable="false">sort</string>
     <string name="pref_units_popularity" translatable="false">popularity.desc</string>
     <string name="pref_units_higher_rated" translatable="false">vote_count.desc</string>
+    <string name="pref_units_favorite" translatable="false">vote_count.desc</string>
     <string name="pref_units_label_popularity">By popularity</string>
     <string name="pref_units_label_higher_rated">By rating</string>
+    <string name="pref_units_label_favorite">Favorites</string>
+    <string name="detail_fragment_text_marked_as_favorite">Film marked as favorite</string>
+    <string name="detail_fragment_film_deleted_from_favorites">Film deleted from favorites</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

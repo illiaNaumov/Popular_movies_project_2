@@ -2,9 +2,12 @@ package com.academy.web.popular_movies;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +20,7 @@ import com.academy.web.myapplication.R;
 import java.util.ArrayList;
 
 
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
    public MovieAdapter movieAdapter;
     public static final String EXTRA_MOVIE = "com.academy.web.myapplication.extra_movie";
 
@@ -74,6 +77,21 @@ public class MainActivityFragment extends Fragment {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortType = pref.getString(getString(R.string.pref_sort_key), getString(R.string.pref_units_popularity));
         fetchMoviesTask.execute(sortType);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
 

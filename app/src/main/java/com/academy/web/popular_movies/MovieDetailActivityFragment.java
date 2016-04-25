@@ -1,15 +1,22 @@
 package com.academy.web.popular_movies;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.academy.web.myapplication.R;
+import com.academy.web.popular_movies.Data.MovieContract;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -24,6 +31,21 @@ public class MovieDetailActivityFragment extends Fragment {
     @Bind(R.id.detail_fragment_text_rating) TextView movieRating;
     @Bind(R.id.detail_fragment_text_synopsis) TextView movieSynopsis;
     @Bind(R.id.detail_fragment_poster_image) ImageView imageView;
+    @Bind(R.id.detail_fragment_favorite_movie_button) FloatingActionButton favoriteMovieButton;
+    Context mContext;
+    private long movieApiID;
+    private String imageURL;
+
+    private static final  String [] projection = {
+            MovieContract.FavoriteMovieEntry.MOVIES_TABLE_NAME + "." + MovieContract.FavoriteMovieEntry._ID,
+            MovieContract.FavoriteMovieEntry.MOVIE_ID,
+            MovieContract.FavoriteMovieEntry.TITLE,
+            MovieContract.FavoriteMovieEntry.POSTER,
+            MovieContract.FavoriteMovieEntry.RELEASE_DATE,
+            MovieContract.FavoriteMovieEntry.PLOT_SYNOPSIS,
+            MovieContract.FavoriteMovieEntry.VOTE_AVERAGE
+
+    };
 
 
     public MovieDetailActivityFragment() {
@@ -36,6 +58,21 @@ public class MovieDetailActivityFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         ButterKnife.bind(this, view);
+        favoriteMovieButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isFilmFavorite()){
+                    deleteFilmFromFavorites();
+                    favoriteMovieButton.setImageResource(R.mipmap.ic_favorite_white_48dp);
+                    Toast.makeText(getContext(), R.string.detail_fragment_film_deleted_from_favorites, Toast.LENGTH_SHORT).show();
+                }else{
+                    markFilmAsFavorite();
+                    favoriteMovieButton.setImageResource(R.mipmap.ic_favorite_black_48dp);
+                    Toast.makeText(getContext(), R.string.detail_fragment_text_marked_as_favorite, Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
         return view;
     }
 
@@ -51,12 +88,49 @@ public class MovieDetailActivityFragment extends Fragment {
     }
 
     public void updateDetailFragment(Movie movie){
+        movieApiID = movie.movieID;
         movieTitle.setText(movie.movieTitle);
         movieYear.setText(movie.releaseDate.substring(0,4));
         movieRating.setText(String.valueOf(movie.userRating).concat("/10"));
         movieSynopsis.setText(String.valueOf(movie.plotSynopsis));
 
-        String imageURL = MovieAdapter.FORECAST_BASE_URL + movie.posterImageLink;
+
+        imageURL = MovieAdapter.FORECAST_BASE_URL + movie.posterImageLink;
         Picasso.with(getContext()).load(imageURL).into(imageView);
+        if(isFilmFavorite()){
+            favoriteMovieButton.setImageResource(R.mipmap.ic_favorite_black_48dp);
+        }
     }
+
+    public boolean isFilmFavorite(){
+        boolean isFavorite = false;
+        Cursor cursor = getContext().getContentResolver().query(MovieContract.FavoriteMovieEntry.buildMovieApiIDUri(movieApiID),
+                projection,
+                null,
+                null,
+                null);
+        if(cursor.moveToFirst()){
+            isFavorite = true;
+        }
+        return isFavorite;
+    }
+
+    public void markFilmAsFavorite(){
+        ContentValues movieValues = new ContentValues();
+        movieValues.put(MovieContract.FavoriteMovieEntry.MOVIE_ID, movieApiID);
+        movieValues.put(MovieContract.FavoriteMovieEntry.TITLE, String.valueOf(movieTitle.getText()));
+        movieValues.put(MovieContract.FavoriteMovieEntry.POSTER, imageURL);
+        movieValues.put(MovieContract.FavoriteMovieEntry.RELEASE_DATE, String.valueOf(movieYear.getText()));
+        movieValues.put(MovieContract.FavoriteMovieEntry.PLOT_SYNOPSIS, String.valueOf(movieSynopsis.getText()));
+        movieValues.put(MovieContract.FavoriteMovieEntry.VOTE_AVERAGE, Utils.parsePopularity(movieRating.getText().toString()));
+
+        getContext().getContentResolver().insert(MovieContract.FavoriteMovieEntry.CONTENT_URI, movieValues);
+    }
+
+    public void deleteFilmFromFavorites(){
+        String [] selection = {String.valueOf(movieApiID)};
+        getContext().getContentResolver().delete(MovieContract.FavoriteMovieEntry.buildMovieApiIDUri(movieApiID), null, selection);
+    }
+
+
 }

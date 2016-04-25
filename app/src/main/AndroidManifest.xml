@@ -32,7 +32,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.academy.web.popular_movies.MainActivity" />
         </activity>
-
+        <provider
+            android:authorities="com.academy.web.popular_movies"
+            android:name="com.academy.web.popular_movies.Data.MovieProvider" />
     </application>
 
 </manifest>

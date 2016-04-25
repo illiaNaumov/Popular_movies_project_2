@@ -88,6 +88,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
     private Movie [] getMoviesFromJSON(String inputJSONString) throws JSONException {
         final String RESULTS = "results";
         final String POSTER_PATH = "poster_path";
+        final String ID = "id";
         final String ORIGINAL_TITLE = "original_title";
         final String RATING = "vote_average";
         final String RELEASE_DATE = "release_date";
@@ -97,6 +98,7 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
         JSONArray jsonArray = jsonObject.getJSONArray(RESULTS);
 
         Movie movies [] = new Movie[jsonArray.length()];
+        long movieID = 0;
         String movieTitle = "";
         String posterImageLink = "";
         String plotSynopsis = "";
@@ -104,12 +106,13 @@ public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]> {
         String releaseDate = "";
         for(int i = 0; i < movies.length; i++){
             JSONObject movieJSON = jsonArray.getJSONObject(i);
+            movieID = movieJSON.getLong(ID);
             movieTitle = movieJSON.getString(ORIGINAL_TITLE);
             posterImageLink = movieJSON.getString(POSTER_PATH);
             plotSynopsis = movieJSON.getString(PLOT_SYNOPSYS);
             userRating = movieJSON.getDouble(RATING);
             releaseDate = movieJSON.getString(RELEASE_DATE);
-            movies[i] = new Movie(movieTitle, posterImageLink, plotSynopsis, userRating, releaseDate);
+            movies[i] = new Movie(movieID, movieTitle, posterImageLink, plotSynopsis, userRating, releaseDate);
         }
 
         return movies;
