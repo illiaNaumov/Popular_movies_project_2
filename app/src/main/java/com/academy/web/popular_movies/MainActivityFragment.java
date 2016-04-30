@@ -73,7 +73,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     private void updateMovies(){
-        FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(movieAdapter);
+        FetchMoviesTask fetchMoviesTask = new FetchMoviesTask(movieAdapter, getContext());
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String sortType = pref.getString(getString(R.string.pref_sort_key), getString(R.string.pref_units_popularity));
         fetchMoviesTask.execute(sortType);

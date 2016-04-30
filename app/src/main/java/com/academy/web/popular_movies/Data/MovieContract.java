@@ -12,6 +12,7 @@ public class MovieContract {
     public static final String CONTENT_AUTHORITY = "com.academy.web.popular_movies";
     public static final Uri BASE_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_FAVORITE_MOVIES = "favorite_movie";
+    public static final String PATH_FAVORITE_MOVIE_TRAILERS = "favorite_movie_trailers";
 
     public static final class FavoriteMovieEntry implements BaseColumns {
         public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH_FAVORITE_MOVIES).build();
@@ -45,6 +46,23 @@ public class MovieContract {
             return Long.parseLong(uri.getPathSegments().get(1));
         }
 
+    }
+
+    public static final class FavoriteMovieTrailers implements BaseColumns{
+        public static final Uri CONTENT_URI = BASE_URI.buildUpon().appendPath(PATH_FAVORITE_MOVIE_TRAILERS).build();
+
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/"
+                + CONTENT_AUTHORITY + "/" + PATH_FAVORITE_MOVIE_TRAILERS;
+        public static final String CONTENT_ITEM = ContentResolver.CURSOR_ITEM_BASE_TYPE
+                + "/" + CONTENT_AUTHORITY + "/" + PATH_FAVORITE_MOVIE_TRAILERS;
+
+        //table name
+        public static final String MOVIE_TRAILERS_TABLE_NAME = "favorite_movie_tailers";
+
+        //table columns
+        public static final String MOVIE_ID = "movie_id";
+        public static final String TITLE = "title";
+        public static final String KEY = "poster_image";
     }
 
 }

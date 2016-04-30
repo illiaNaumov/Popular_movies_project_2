@@ -9,7 +9,7 @@
     <string name="pref_sort_key" translatable="false">sort</string>
     <string name="pref_units_popularity" translatable="false">popularity.desc</string>
     <string name="pref_units_higher_rated" translatable="false">vote_count.desc</string>
-    <string name="pref_units_favorite" translatable="false">vote_count.desc</string>
+    <string name="pref_units_favorite" translatable="false">favorite</string>
     <string name="pref_units_label_popularity">By popularity</string>
     <string name="pref_units_label_higher_rated">By rating</string>
     <string name="pref_units_label_favorite">Favorites</string>

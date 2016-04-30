@@ -3,6 +3,7 @@ package com.academy.web.popular_movies;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,14 +11,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.academy.web.myapplication.BuildConfig;
 import com.academy.web.myapplication.R;
+import com.academy.web.popular_movies.Data.FetchMovieTrailers;
 import com.academy.web.popular_movies.Data.MovieContract;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,9 +42,12 @@ public class MovieDetailActivityFragment extends Fragment {
     @Bind(R.id.detail_fragment_text_synopsis) TextView movieSynopsis;
     @Bind(R.id.detail_fragment_poster_image) ImageView imageView;
     @Bind(R.id.detail_fragment_favorite_movie_button) FloatingActionButton favoriteMovieButton;
+    private static final int REQ_START_STANDALONE_PLAYER = 1;
+    private static final int REQ_RESOLVE_SERVICE_MISSING = 2;
     Context mContext;
     private long movieApiID;
     private String imageURL;
+    public MovieTrailerAdapter movieTrailerAdapter;
 
     private static final  String [] projection = {
             MovieContract.FavoriteMovieEntry.MOVIES_TABLE_NAME + "." + MovieContract.FavoriteMovieEntry._ID,
@@ -73,8 +86,33 @@ public class MovieDetailActivityFragment extends Fragment {
 
             }
         });
+
+        movieTrailerAdapter = new MovieTrailerAdapter(getActivity(), new ArrayList<Trailer>());
+        final ListView trailersListView = (ListView) view.findViewById(R.id.fragment_movie_detail_trailers_list_view);
+        trailersListView.setAdapter(movieTrailerAdapter);
+        trailersListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Trailer trailer = (Trailer) adapterView.getItemAtPosition(i);
+
+                Intent intent = null;
+                    intent = YouTubeStandalonePlayer.createVideoIntent(
+                            getActivity(), BuildConfig.YOUTUBE_API_KEY, trailer.key, 0, false, false);
+
+
+                if (intent != null) {
+                        startActivityForResult(intent, REQ_START_STANDALONE_PLAYER);
+                    } else {
+                        // Could not resolve the intent - must need to install or update the YouTube API service.
+                        YouTubeInitializationResult.SERVICE_MISSING
+                                .getErrorDialog(getActivity(), REQ_RESOLVE_SERVICE_MISSING).show();
+                    }
+                }
+        });
+
         return view;
     }
+
 
     @Override
     public void onStart() {
@@ -100,6 +138,10 @@ public class MovieDetailActivityFragment extends Fragment {
         if(isFilmFavorite()){
             favoriteMovieButton.setImageResource(R.mipmap.ic_favorite_black_48dp);
         }
+
+        FetchMovieTrailers fetchMovieTrailers = new FetchMovieTrailers(movieTrailerAdapter, getContext());
+        fetchMovieTrailers.execute(movie.movieID);
+
     }
 
     public boolean isFilmFavorite(){

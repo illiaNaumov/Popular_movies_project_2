@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+    }
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
@@ -18,6 +20,7 @@ android {
     }
     buildTypes.each {
         it.buildConfigField 'String', 'POPULAR_MOVIE_API_KEY', "\"b6a086611f0b20a1f070418b9a87e70f\""
+        it.buildConfigField 'String', 'YOUTUBE_API_KEY', "\"AIzaSyDtenxyytrO9g2F6sn_CIqbpviLKQksGjU\""
     }
     repositories {
         mavenCentral()
@@ -38,4 +41,5 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
 }

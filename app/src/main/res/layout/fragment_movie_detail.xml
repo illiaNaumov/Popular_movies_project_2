@@ -2,18 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 <ScrollView
     android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.academy.web.popular_movies.MovieDetailActivityFragment"
-    tools:showIn="@layout/activity_movie_detail">
-
+    tools:showIn="@layout/activity_movie_detail"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,40 +33,48 @@
             android:textColor="#ffffff"
             android:layout_weight="1" />
 
+
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_fragment_poster_image"
-        android:layout_below="@+id/detailf_fragment_title_layout"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:adjustViewBounds="false"
-        android:scaleType="fitStart" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_fragment_poster_image"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@mipmap/ic_launcher"
+            android:adjustViewBounds="false"
+            android:scaleType="fitStart"
+            android:layout_weight="0.5" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.5">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Release date"
-        android:id="@+id/detail_fragment_text_release_date"
-        android:layout_alignTop="@+id/detail_fragment_poster_image"
-        android:layout_alignLeft="@+id/detail_fragment_text_rating"
-        android:layout_alignStart="@+id/detail_fragment_text_rating" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Release date"
+                android:id="@+id/detail_fragment_text_release_date"
+                android:layout_marginTop="30dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Rating"
-        android:id="@+id/detail_fragment_text_rating"
-        android:layout_below="@+id/detail_fragment_text_release_date"
-        android:layout_toRightOf="@+id/detail_fragment_poster_image"
-        android:layout_toEndOf="@+id/detail_fragment_poster_image" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Rating"
+                android:id="@+id/detail_fragment_text_rating" />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="match_parent"
@@ -73,26 +82,34 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/detail_fragment_text_synopsis"
-        android:layout_below="@+id/detail_fragment_poster_image"
-        android:layout_alignLeft="@+id/detail_fragment_poster_image"
-        android:layout_alignStart="@+id/detail_fragment_poster_image"
-        android:layout_marginRight="30dp" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" />
 
+
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_movie_detail_trailers_list_view"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp" />
     <android.support.design.widget.FloatingActionButton
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:id="@+id/detail_fragment_favorite_movie_button"
         android:clickable="true"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="right|bottom"
         android:src="@mipmap/ic_favorite_white_48dp"
         app:backgroundTint="#80CBC4"
         app:fabSize="mini"
         app:rippleColor="@color/colorPrimaryDark"
-        android:layout_above="@+id/detail_fragment_text_release_date"
-        android:layout_alignRight="@+id/detail_fragment_text_synopsis"
-        android:layout_alignEnd="@+id/detail_fragment_text_synopsis"
-        />
-</RelativeLayout>
+        android:visibility="visible"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp" />
+
+</LinearLayout>
+
 
 </ScrollView>
-    </FrameLayout>
+</FrameLayout>

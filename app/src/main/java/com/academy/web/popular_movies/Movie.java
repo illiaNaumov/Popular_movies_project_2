@@ -3,6 +3,8 @@ package com.academy.web.popular_movies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Map;
+
 /**
  * Created by user on 16.02.2016.
  */
@@ -26,14 +28,13 @@ public class Movie implements Parcelable{
         this.releaseDate = releaseDate;
     }
 
-
     protected Movie(Parcel in) {
-        movieID = in.readLong();
         movieTitle = in.readString();
         posterImageLink = in.readString();
         plotSynopsis = in.readString();
         userRating = in.readDouble();
         releaseDate = in.readString();
+        movieID = in.readLong();
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -54,12 +55,12 @@ public class Movie implements Parcelable{
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(movieID);
-        parcel.writeString(movieTitle);
-        parcel.writeString(posterImageLink);
-        parcel.writeString(plotSynopsis);
-        parcel.writeDouble(userRating);
-        parcel.writeString(releaseDate);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(movieTitle);
+        dest.writeString(posterImageLink);
+        dest.writeString(plotSynopsis);
+        dest.writeDouble(userRating);
+        dest.writeString(releaseDate);
+        dest.writeLong(movieID);
     }
 }

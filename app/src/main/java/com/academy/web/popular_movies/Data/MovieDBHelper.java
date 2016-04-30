@@ -5,13 +5,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.academy.web.popular_movies.Data.MovieContract.FavoriteMovieEntry;
+import com.academy.web.popular_movies.Data.MovieContract.FavoriteMovieTrailers;
 
 /**
  * Created by ilyua on 19.04.2016.
  */
 public class MovieDBHelper extends SQLiteOpenHelper{
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     static final String DATABASE_NAME = "movies.db";
 
@@ -34,7 +35,15 @@ public class MovieDBHelper extends SQLiteOpenHelper{
                 FavoriteMovieEntry.VOTE_AVERAGE + " REAL " +
                 " );";
 
+        final String SQL_CREATE_FAVORITE_MOVIE_TRAILERS_TABLE = "CREATE TABLE " + FavoriteMovieTrailers.MOVIE_TRAILERS_TABLE_NAME + " (" +
+                FavoriteMovieTrailers._ID + " INTEGER PRIMARY KEY, " +
+                FavoriteMovieTrailers.MOVIE_ID + " INTEGER, " +
+                FavoriteMovieTrailers.TITLE + " TEXT, " +
+                FavoriteMovieTrailers.KEY + " TEXT " +
+                " );";
+
         sqLiteDatabase.execSQL(SQL_CREATE_FAVORITE_MOVIE_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_FAVORITE_MOVIE_TRAILERS_TABLE);
     }
 
     @Override
@@ -44,6 +53,7 @@ public class MovieDBHelper extends SQLiteOpenHelper{
         // Note that this only fires if you change the version number for your database.
         // It does NOT depend on the version number for your application.
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FavoriteMovieEntry.MOVIES_TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FavoriteMovieTrailers.MOVIE_TRAILERS_TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 
