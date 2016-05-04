@@ -70,6 +70,9 @@ public class MovieDetailActivityFragment extends Fragment {
 
 
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        View headerView = inflater.inflate(R.layout.header_for_fragment_movie_detail, container, false);
+        ListView listView = (ListView) view.findViewById(R.id.fragment_movie_detail_trailers_list_view);
+        listView.addHeaderView(headerView);
         ButterKnife.bind(this, view);
         favoriteMovieButton.setOnClickListener(new View.OnClickListener() {
             @Override
